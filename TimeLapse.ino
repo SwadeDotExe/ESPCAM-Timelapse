@@ -7,7 +7,7 @@
 const char* ssid = "RHIT-OPEN";
 const char* password = "";
 
-String serverName = "videoserver.reshall.rose-hulman.edu"; 
+String serverName = "videoserver.reshall.rose-hulman.edu";
 String serverPath = "/upload.php";     // The default serverPath should be upload.php
 
 const int serverPort = 80;
@@ -78,7 +78,7 @@ void setup() {
 
   // init with high specs to pre-allocate larger buffers
   if(psramFound()){
-    config.frame_size = FRAMESIZE_SVGA;
+    config.frame_size = FRAMESIZE_UXGA;
     config.jpeg_quality = 10;  //0-63 lower number means higher quality
     config.fb_count = 2;
   } else {
