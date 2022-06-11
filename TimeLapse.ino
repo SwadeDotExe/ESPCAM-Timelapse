@@ -1,13 +1,15 @@
+// Make sure to enable PSRAM in the Arduino IDE!!!
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
 
-const char* ssid = "RHIT-OPEN";
-const char* password = "";
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
 
-String serverName = "videoserver.reshall.rose-hulman.edu";
+String serverName = "192.168.1.22";
 String serverPath = "/upload.php";     // The default serverPath should be upload.php
 
 const int serverPort = 80;
@@ -79,12 +81,14 @@ void setup() {
   // init with high specs to pre-allocate larger buffers
   if(psramFound()){
     config.frame_size = FRAMESIZE_UXGA;
+    config.jpeg_quality = 3;  //0-63 lower number means higher quality
+    config.fb_count = 3;
+    Serial.println("PSRAM was found!");
+  } else {
+    config.frame_size = FRAMESIZE_SXGA;
     config.jpeg_quality = 10;  //0-63 lower number means higher quality
     config.fb_count = 2;
-  } else {
-    config.frame_size = FRAMESIZE_CIF;
-    config.jpeg_quality = 12;  //0-63 lower number means higher quality
-    config.fb_count = 1;
+    Serial.println("PSRAM was NOT found!");
   }
 
   // camera init
