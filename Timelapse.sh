@@ -15,9 +15,20 @@ DATE=$(date --date="1 day ago" +'%B %d, %Y')
 # Debug Date
 #DATE=$(date +'%B %d, %Y')
 
+# Creates the timelapse
 ffmpeg -framerate 60 -pattern_type glob -i "$SERVER_DIR/$FILE_DATE/*.jpg" -s:v 1600x1200 -c:v libx264 -crf 25 -pix_fmt yuv420p "$SERVER_DIR/$FILE_DATE/Dorm Timelapse $TIMELAPSE_DATE.mp4"
 
+# Uploads timelapse to YouTube
 youtube-upload --client-secrets=/mnt/SSD/Scripts/DormTimeLapse/secret.json --title="Dorm Timelapse $TIMELAPSE_DATE" --description="Timelapse from Indianapolis on $HUMAN_DATE." --playlist="Dorm Timelapses" "$SERVER_DIR/$FILE_DATE/Dorm Timelapse $TIMELAPSE_DATE.mp4" --privacy unlisted
+
+# Change directory to picture location
+cd "$SERVER_DIR/$FILE_DATE"
+
+# Zip all pictures into Pictures.zip
+sudo zip -R Pictures '*.jpg'
+
+# Delete all the JPGs
+sudo find . -name "*.jpg" -type f -delete
 
 # Shell Notification
 if (( $SECONDS > 3600 )); then
